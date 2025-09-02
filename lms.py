@@ -1,6 +1,8 @@
 import numpy as np
 import cv2
 import random
+import sys
+
 
 def logistic_map_key(s):
     h, w = s[0], s[1]
@@ -31,14 +33,24 @@ def unscram(scram, k):
     restored = flat[reverse_k]
     return restored.reshape(scram.shape)
 
-pic = cv2.imread("myPicture.jpg")
-if pic is None:
-    print("Image is not found")
-    quit()
 
-lmkey = logistic_map_key(pic.shape)
-s = scram(pic, lmkey)
-us = unscram(s, lmkey) 
 
-cv2.imwrite("scrambled.jpg", s)
-cv2.imwrite("unscrambled.jpg", us)
+if sys.argv[1] == 'scram':
+    arg_pic = cv2.imread(sys.argv[2])
+    if arg_pic is None:
+        print("Image is not found")
+        quit()
+
+    arg_pic_key = logistic_map_key(arg_pic.shape)
+    np.save("key.npy", arg_pic_key)
+
+    arg_pic_scramble = scram(arg_pic, arg_pic_key)
+    cv2.imwrite("scrambled.png", arg_pic_scramble)
+
+
+elif sys.argv[1] == 'unscram':
+    arg_key = np.load(sys.argv[2])
+    arg_pic = cv2.imread(sys.argv[3])
+
+    arg_pic_unscramble = unscram(arg_pic, arg_key)
+    cv2.imwrite("unscrambled.png", arg_pic_unscramble)
