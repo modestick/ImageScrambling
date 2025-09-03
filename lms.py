@@ -1,7 +1,7 @@
 import numpy as np
 import cv2
 import random
-import sys
+import argparse
 
 
 def logistic_map_key(s):
@@ -34,23 +34,36 @@ def unscram(scram, k):
     return restored.reshape(scram.shape)
 
 
+myparser = argparse.ArgumentParser(description='Image Scrambling')
 
-if sys.argv[1] == 'scram':
-    arg_pic = cv2.imread(sys.argv[2])
-    if arg_pic is None:
-        print("Image is not found")
-        quit()
+mysubparser = myparser.add_subparsers(dest='action', required=True, title='Commands')
 
-    arg_pic_key = logistic_map_key(arg_pic.shape)
-    np.save("key.npy", arg_pic_key)
+cli_scram = mysubparser.add_parser('scram', help='Scramble the image')
+cli_scram.add_argument('image', help='Path to the image to scramble')
 
-    arg_pic_scramble = scram(arg_pic, arg_pic_key)
-    cv2.imwrite("scrambled.png", arg_pic_scramble)
+cli_unscram = mysubparser.add_parser('unscram', help='Unscramble the image')
+cli_unscram.add_argument('image', help='Path to th image to unscramble')
+cli_unscram.add_argument('key', help='The key for unscrambling')
+
+args = myparser.parse_args()
 
 
-elif sys.argv[1] == 'unscram':
-    arg_key = np.load(sys.argv[2])
-    arg_pic = cv2.imread(sys.argv[3])
+if args.action == 'scram':
+   
+    arg_image = cv2.imread(args.image)
+    arg_key = logistic_map_key(arg_image.shape)
+    scrambled_result = scram(arg_image, arg_key)
 
-    arg_pic_unscramble = unscram(arg_pic, arg_key)
-    cv2.imwrite("unscrambled.png", arg_pic_unscramble)
+    cv2.imwrite('scrambled.png', scrambled_result)
+    np.save('key.npy',arg_key )
+
+elif args.action == 'unscram':
+    
+    arg_image = cv2.imread(args.image)
+    arg_key = np.load(args.key)
+    unscrambled_result = unscram(arg_image, arg_key)
+
+    cv2.imwrite('unscrambled.png', unscrambled_result)
+    
+
+    
