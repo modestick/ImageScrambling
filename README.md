@@ -12,6 +12,7 @@ The project requires the following Python libraries:
 - **OpenCV (cv2)**: For image processing capabilities.
 - **Random**: For generating random values in the scrambling process.
 - **argparse**: For parsing command-line arguments to control the script’s behavior.
+- **os**: For handling files, directories, and paths.
 
 ## Installation and Usage on Windows 🖥️
 
@@ -54,17 +55,19 @@ The project requires the following Python libraries:
 
 5. **Run the Script**
 
-   Run the `lms.py` with either 'scram' or 'unscram YOUR_KEY' and the image filename as arguments
+   Run the `lms.py` with either 'scram' or 'unscram YOUR_KEY' and the image filename or directory as arguments. EXAMPLES BELOW.
    ```bash
    python lms.py scram picture.png
    ```
-   ***The key used for unscrambling is saved along with the scrambled image (key.npy)***
    ```bash
-   python lms.py unscram scrambled.png key.npy
+   python lms.py scram randomimages/
+   ```   
+   ```bash
+   python lms.py unscram lms_images/scrambled/scrambled.png lms_images/keys/key.npy
    ```
 
 6. **View Results**
-   - Result will be saved in the same directory as `lms.py`.
+   - The results will be saved as `lms_images/scrambled/scrambled.png`, `lms_images/unscrambled/unscrambled.png` and `lms_images/keys/key.npy`.
 
 ## Installation and Usage on Linux/Mac 🐧
 
@@ -93,16 +96,19 @@ To set up and run the project on Linux or Mac:
 
 4. **Run the Script**
 
-   Run the `lms.py` with either 'scram' or 'unscram' and the image filename as arguments (+ key for unscrambled)
+   Run the `lms.py` with either 'scram' or 'unscram' and the image filename or directory as arguments (+ key for unscrambled) EXAMPLES BELOW.
    ```bash
-   python lms.py scram picture.png
+   python3 lms.py scram picture.png
    ```
-   ***The key used for unscrambling is saved along with the scrambled image (key.npy)***
    ```bash
-   python lms.py unscram scrambled.png key.npy
+   python3 lms.py scram randomimages/
+   ```   
+   ```bash
+   python3 lms.py unscram lms_images/scrambled/scrambled.png lms_images/keys/key.npy
    ```
+   
 
 5. **View Results**
-   - Result will be saved in the same directory as `lms.py`.
+   - The results will be saved as `lms_images/scrambled/scrambled.png`, `lms_images/unscrambled/unscrambled.png` and `lms_images/keys/key.npy`.
 
 ## Thank You for Exploring This Project! 🌟

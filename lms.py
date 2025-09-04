@@ -2,7 +2,7 @@ import numpy as np
 import cv2
 import random
 import argparse
-
+import os
 
 def logistic_map_key(s):
     h, w = s[0], s[1]
@@ -47,15 +47,43 @@ cli_unscram.add_argument('key', help='The key for unscrambling')
 
 args = myparser.parse_args()
 
+scrambled_images_dir = (os.path.join('lms_images', 'scrambled'))
+unscrambled_images_dir = (os.path.join('lms_images', 'unscrambled'))
+keys_dir = (os.path.join('lms_images', 'keys'))
+os.makedirs(scrambled_images_dir, exist_ok=True)
+os.makedirs(unscrambled_images_dir, exist_ok=True)
+os.makedirs(keys_dir, exist_ok=True)
+
 
 if args.action == 'scram':
    
-    arg_image = cv2.imread(args.image)
-    arg_key = logistic_map_key(arg_image.shape)
-    scrambled_result = scram(arg_image, arg_key)
+    arg_image = os.path.normpath(args.image)
+    
 
-    cv2.imwrite('scrambled.png', scrambled_result)
-    np.save('key.npy',arg_key )
+    
+    if os.path.isfile(args.image):
+        arg_image = cv2.imread(args.image)
+        arg_key = logistic_map_key(arg_image.shape)
+        scrambled_result = scram(arg_image, arg_key)
+        cv2.imwrite(os.path.join(scrambled_images_dir, 'scrambled.png'), scrambled_result)
+        np.save(os.path.join(keys_dir, 'key'),arg_key )
+
+
+    elif os.path.isdir(arg_image):
+        image_extensions = ('.png', '.jpeg', '.jpg', '.gif',
+          '.tif', '.tiff', '.bmp', '.webp',
+          '.raw', '.cr2', '.nef', '.heic', '.svg')
+        list_of_images_to_scramble = [x for x in os.listdir(arg_image) if x.lower().endswith(image_extensions)]
+
+
+        for x in range(len(list_of_images_to_scramble)):
+            full_path_of_image = os.path.join(arg_image, list_of_images_to_scramble[x])
+            image = cv2.imread(full_path_of_image)
+            key = logistic_map_key(image.shape)
+            scrambled_result = scram(image, key)
+            cv2.imwrite(os.path.join(scrambled_images_dir, f'scrambled{x + 1}.png'), scrambled_result)
+            np.save(os.path.join(keys_dir, f'key{x + 1}'), key)
+
 
 elif args.action == 'unscram':
     
@@ -63,7 +91,7 @@ elif args.action == 'unscram':
     arg_key = np.load(args.key)
     unscrambled_result = unscram(arg_image, arg_key)
 
-    cv2.imwrite('unscrambled.png', unscrambled_result)
+    cv2.imwrite(os.path.join(unscrambled_images_dir, 'unscrambled.png'), unscrambled_result)
     
 
     
