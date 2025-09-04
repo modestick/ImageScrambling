@@ -65,6 +65,8 @@ The project requires the following Python libraries:
    ```bash
    python lms.py unscram lms_images/scrambled/scrambled.png lms_images/keys/key.npy
    ```
+   `--zip_keys` an optional argument. Saves all keys into a single zipped .zip file.
+   
 
 6. **View Results**
    - The results will be saved as `lms_images/scrambled/scrambled.png`, `lms_images/unscrambled/unscrambled.png` and `lms_images/keys/key.npy`.
@@ -106,7 +108,8 @@ To set up and run the project on Linux or Mac:
    ```bash
    python3 lms.py unscram lms_images/scrambled/scrambled.png lms_images/keys/key.npy
    ```
-   
+   `--zip_keys` an optional argument. Saves all keys into a single zipped .zip file.
+
 
 5. **View Results**
    - The results will be saved as `lms_images/scrambled/scrambled.png`, `lms_images/unscrambled/unscrambled.png` and `lms_images/keys/key.npy`.

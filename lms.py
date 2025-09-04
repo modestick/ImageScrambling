@@ -3,6 +3,10 @@ import cv2
 import random
 import argparse
 import os
+import zipfile
+from datetime import datetime
+
+timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 
 def logistic_map_key(s):
     h, w = s[0], s[1]
@@ -40,6 +44,8 @@ mysubparser = myparser.add_subparsers(dest='action', required=True, title='Comma
 
 cli_scram = mysubparser.add_parser('scram', help='Scramble the image')
 cli_scram.add_argument('image', help='Path to the image to scramble')
+cli_scram.add_argument('--zip_keys', action='store_true', help='Save all keys into a single zipped .zip file')
+
 
 cli_unscram = mysubparser.add_parser('unscram', help='Unscramble the image')
 cli_unscram.add_argument('image', help='Path to th image to unscramble')
@@ -83,6 +89,11 @@ if args.action == 'scram':
             scrambled_result = scram(image, key)
             cv2.imwrite(os.path.join(scrambled_images_dir, f'scrambled{x + 1}.png'), scrambled_result)
             np.save(os.path.join(keys_dir, f'key{x + 1}'), key)
+        if args.zip_keys:
+            with zipfile.ZipFile(f'keys{timestamp}.zip', 'w') as zip_file:
+                for key in os.listdir(keys_dir):
+                    zip_file.write(os.path.join(keys_dir,key), arcname=key)
+                    os.remove(os.path.join(keys_dir,key))
 
 
 elif args.action == 'unscram':
