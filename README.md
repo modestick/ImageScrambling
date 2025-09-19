@@ -13,6 +13,8 @@ The project requires the following Python libraries:
 - **Random**: For generating random values in the scrambling process.
 - **argparse**: For parsing command-line arguments to control the script’s behavior.
 - **os**: For handling files, directories, and paths.
+- **datetime**: For datetime
+- **zipfile**: For zipping files
 
 ## Installation and Usage on Windows 🖥️
 
@@ -65,6 +67,9 @@ The project requires the following Python libraries:
    ```bash
    python lms.py unscram lms_images/scrambled/scrambled.png lms_images/keys/key.npy
    ```
+   `--zip_keys` an optional argument. Saves all keys into a single zipped .zip file.
+   `--zip_images` an optional argument. Saves all scramble images into a single zipped .zip file.
+
    
 
 6. **View Results**
@@ -107,8 +112,13 @@ To set up and run the project on Linux or Mac:
    ```bash
    python3 lms.py unscram lms_images/scrambled/scrambled.png lms_images/keys/key.npy
    ```
+   `--zip_keys` an optional argument. Saves all keys into a single zipped .zip file.
+   `--zip_images` an optional argument. Saves all scramble images into a single zipped .zip file.
+
+
+
 
 5. **View Results**
-   - The results will be saved as `lms_images/scrambled/scrambled.png`, `lms_images/unscrambled/unscrambled.png`.
+   - The results will be saved as `lms_images/scrambled/scrambled.png`, `lms_images/unscrambled/unscrambled.png` and `lms_images/keys/key.npy`.
 
 ## Thank You for Exploring This Project! 🌟
